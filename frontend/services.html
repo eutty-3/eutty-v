@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Services | Alex Virtual Assistant</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="nav">
+    <div class="brand">Eutty<span class="accent">VA</span></div>
+    <nav>
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+      <a href="dashboard.html">Portal</a>
+    </nav>
+  </header>
+
+  <main class="services-wrap">
+    <div class="canvas-layers">
+      <div class="bg-blob blob-1"></div>
+      <div class="bg-blob blob-2"></div>
+      <div class="bg-blob blob-3"></div>
+    </div>
+
+    <section class="services-hero glass">
+      <div class="hero-left">
+        <h1 class="hero-title">Services — <span class="glow">Tailored for you</span></h1>
+        <p class="hero-sub">Live, imaginative, and professional support — packages and custom solutions for busy creators and teams.</p>
+        <div class="hero-actions">
+          <a href="contact.html" class="btn primary">Request a Quote</a>
+          <a href="dashboard.html" class="btn ghost">Open Portal</a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="services-legend glass-2">
+          <h4>Why choose Alex?</h4>
+          <ul>
+            <li>Fast turnaround • reliable communication</li>
+            <li>Secure & privacy-aware workflows</li>
+            <li>Custom packages & repeatable systems</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="service-grid-wrap">
+      <h2 class="section-title">Live Services</h2>
+
+      <div class="service-grid" id="service-grid" data-parallax>
+        <!-- each card tilts and responds to pointer -->
+        <article class="service-card" data-role="card" data-color="blue">
+          <div class="card-ring"></div>
+          <h3>Administrative Support</h3>
+          <p>Calendar management, email triage, document organization and recurring workflows.</p>
+          <div class="card-meta">From $8/hr • Custom plans</div>
+        </article>
+
+        <article class="service-card" data-role="card" data-color="violet">
+          <div class="card-ring"></div>
+          <h3>Social Media</h3>
+          <p>Content scheduling, caption writing, engagement checks, and analytics summaries.</p>
+          <div class="card-meta">Packages • Monthly retainers</div>
+        </article>
+
+        <article class="service-card" data-role="card" data-color="teal">
+          <div class="card-ring"></div>
+          <h3>Research & Reports</h3>
+          <p>Competitor research, lead lists, market summaries and actionable insights.</p>
+          <div class="card-meta">Per project pricing</div>
+        </article>
+
+        <article class="service-card" data-role="card" data-color="gold">
+          <div class="card-ring"></div>
+          <h3>Onboarding & Setup</h3>
+          <p>Tool setup (Trello, Notion, email funnels), SOPs, and training sessions for your team.</p>
+          <div class="card-meta">One-time setup</div>
+        </article>
+
+        <article class="service-card" data-role="card" data-color="green">
+          <div class="card-ring"></div>
+          <h3>Technical Help</h3>
+          <p>Light troubleshooting, website edits, plugin updates, and device guidance.</p>
+          <div class="card-meta">Hourly or ticketed</div>
+        </article>
+
+        <article class="service-card" data-role="card" data-color="purple">
+          <div class="card-ring"></div>
+          <h3>Custom Projects</h3>
+          <p>Need a special workflow or recurring automation? I’ll plan and deliver it end-to-end.</p>
+          <div class="card-meta">Estimate provided</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="cta-inquire glass">
+      <h3>Want a custom bundle?</h3>
+      <p>Tell me your needs — I’ll create a package that fits your workflow and budget.</p>
+      <a href="contact.html" class="btn primary">Inquire Now</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>© 2025 Eutty | Virtual Assistant</small>
+  </footer>
+
+  <script>
+    // pointer-driven light & tilt for cards
+    (function(){
+      const cards = document.querySelectorAll('[data-role="card"]');
+      const grid = document.getElementById('service-grid');
+
+      function handleMove(e){
+        const x = (e.clientX || (e.touches && e.touches[0].clientX)) - window.innerWidth/2;
+        const y = (e.clientY || (e.touches && e.touches[0].clientY)) - window.innerHeight/2;
+
+        // move background blobs for depth (CSS variables)
+        document.documentElement.style.setProperty('--cursor-x', `${x}px`);
+        document.documentElement.style.setProperty('--cursor-y', `${y}px`);
+
+        cards.forEach((c, i) => {
+          const rect = c.getBoundingClientRect();
+          const cx = rect.left + rect.width/2;
+          const cy = rect.top + rect.height/2;
+          const dx = (e.clientX || (e.touches && e.touches[0].clientX)) - cx;
+          const dy = (e.clientY || (e.touches && e.touches[0].clientY)) - cy;
+
+          const tiltX = (dy / rect.height) * -12;
+          const tiltY = (dx / rect.width) * 12;
+          const depth = 30 + i * 6;
+
+          c.style.transform = `perspective(900px) translateZ(${depth}px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+          c.style.boxShadow = `0 ${10 + Math.abs(tiltX)}px ${20 + Math.abs(tiltY)}px rgba(2,10,25,0.45)`;
+        });
+      }
+
+      window.addEventListener('mousemove', handleMove);
+      window.addEventListener('touchmove', handleMove, {passive:true});
+
+      // subtle entrance animation
+      setTimeout(()=> {
+        document.querySelectorAll('.service-card').forEach((c,i)=>{
+          c.style.transition = 'transform 450ms cubic-bezier(.2,.9,.2,1), box-shadow 350ms ease, opacity 450ms ease';
+          c.style.opacity = 1;
+          c.style.transform = c.style.transform.replace('translateZ(0px)', `translateZ(${30 + i*6}px)`);
+        });
+      }, 220);
+    })();
+  const links = document.querySelectorAll('header.nav nav a');
+  const currentPage = window.location.pathname.split("/").pop();
+
+  links.forEach(link => {
+    if (link.getAttribute('href') === currentPage) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+  </script>
+</body>
+</html>

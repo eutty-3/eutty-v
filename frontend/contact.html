@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Alex Virtual Assistant</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Optional clean notification styling */
+    .euai-notification {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #222;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+    .euai-notification.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="nav">
+    <div class="brand">Eutty<span class="accent">VA</span></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html" class="active">Contact</a>
+      <a href="dashboard.html">Portal</a>
+    </nav>
+  </header>
+
+  <section class="contact-section">
+    <div class="glass-card">
+      <h2>Contact Me</h2>
+      <p>Let’s connect! Fill out the form below and I’ll get back to you soon.</p>
+      <form id="contact-form" method="post">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Type your message here..." required></textarea>
+        </div>
+        <button type="submit" class="glow-btn">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <div id="euai-notification" class="euai-notification"></div>
+
+  <footer>
+    <p>© 2025 Eutty Virtual Assistant | All rights reserved.</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('contact-form');
+    const notification = document.getElementById('euai-notification');
+
+    // Determine API URL automatically
+    const API_URL = window.location.hostname === "localhost"
+      ? "http://localhost:3000"
+      : "https://your-live-backend-url.com"; // replace with your real domain later
+
+    // Show notification message
+    function showNotification(msg) {
+      notification.textContent = msg;
+      notification.classList.add('show');
+      setTimeout(() => notification.classList.remove('show'), 3000);
+    }
+
+    // Handle form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !message) {
+        showNotification(' Please fill in all fields.');
+        return;
+      }
+
+      showNotification(' Sending message...');
+
+      try {
+        const res = await fetch(`${API_URL}/api/contact`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          showNotification(' Message sent! I’ll get back to you soon.');
+          form.reset();
+        } else {
+          showNotification(' Failed to send: ' + (data.error || 'Unknown error.'));
+        }
+      } catch (err) {
+        console.error(err);
+        showNotification(' Error sending message. Try again later.');
+      }
+    });
+
+    // Highlight current page in navigation
+    const links = document.querySelectorAll('header.nav nav a');
+    const currentPage = window.location.pathname.split("/").pop();
+
+    links.forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>

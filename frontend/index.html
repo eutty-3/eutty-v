@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Home | Eutty Virtual Assistant</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="nav">
+    <div class="brand">Eutty<span class="accent">VA</span></div>
+    <nav>
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+      <a href="dashboard.html">Portal</a>
+    </nav>
+  </header>
+
+<!-- MAIN CONTENT -->
+<main class="main-wrap">
+  <!-- INTRODUCTION / HERO SECTION -->
+  <section class="home-hero glass">
+    <div class="intro-text">
+      <h1 class="hero-title">Welcome to Eutty Virtual Assistant</h1>
+      
+      <p>
+        Eutty Virtual Assistant was developed in 2025 to provide seamless digital support for users navigating online applications, services, and cyber solutions. The system was designed to simplify tasks that normally take hours, offering a reliable and centralized platform for managing administrative needs.
+      </p>
+      
+      <p>
+        The purpose of Eutty Virtual Assistant is to empower users with fast, secure, and professional assistance. Whether you need help with online applications, account recovery, or digital documentation, the system is equipped to guide you efficiently through every process.
+      </p>
+      
+      <p>
+        This system works by combining intelligent automation, user-friendly interfaces, and secure protocols to deliver personalized support. Every interaction is designed to be straightforward, reducing stress and saving valuable time for individuals, students, and professionals alike.
+      </p>
+      
+      <p>
+        We sincerely thank you for accessing Eutty Virtual Assistant. Your trust and engagement are what drive us to continually improve and expand the services we offer. We hope you find this platform useful, intuitive, and supportive in achieving your goals.
+      </p>
+    </div>
+  </section>
+</main>
+
+    <!-- COMMUNICATION CARDS SECTION (REPLACES SERVICE CARDS) -->
+    <section class="communications-wrap glass">
+      <h2 class="section-title">Official Communications</h2>
+      <p>Stay updated with the latest messages from Admin and the relevant team.</p>
+
+      <div class="floating-cards" id="cards">
+        <div class="card" data-role="card">
+          <h4>Admin Notice</h4>
+          <p>System maintenance on 20th Oct, 10:00–14:00. Services may be unavailable.</p>
+          <small>From: Admin Team | 15 Oct 2025</small>
+        </div>
+
+        <div class="card" data-role="card" data-start="2025-10-16T08:00" data-end="2025-10-16T18:00">
+          <h4>Cyber Security Update</h4>
+          <p>Please update your passwords and enable 2FA for all accounts.</p>
+          <small>From: Security Team | 16 Oct 2025</small>
+        </div>
+
+        <div class="card" data-role="card">
+          <h4>New Service Launch</h4>
+          <p>Launching the new eCitizen support portal next week!</p>
+          <small>From: Admin Team | 14 Oct 2025</small>
+        </div>
+
+        <div class="card" data-role="card">
+          <h4>Contact Eutty Virtual</h4>
+          <p>
+            WhatsApp: +254 793038277<br>
+            Email: euttyvirtual@gmail.com<br>
+            Web: www.euttyvirtual.com<br>
+            Location: Kisii County, Kenya
+          </p>
+          <small>From: Support Team</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA INQUIRE SECTION (KEPT FROM ORIGINAL) -->
+    <section class="cta-inquire glass">
+      <h3>Interested to know work-flow of services ?</h3>
+      <p>Im here to assist you </p>
+      <a href="contact.html" class="btn primary">Get  in touch </a>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <small>© 2025 Eutty | Virtual Assistant</small>
+  </footer>
+
+  <!-- ORIGINAL 3D TILT JS KEPT -->
+  <script>
+    (function(){
+      const cards = document.querySelectorAll('[data-role="card"]');
+      const grid = document.getElementById('service-grid');
+
+      function handleMove(e){
+        const x = (e.clientX || (e.touches && e.touches[0].clientX)) - window.innerWidth/2;
+        const y = (e.clientY || (e.touches && e.touches[0].clientY)) - window.innerHeight/2;
+
+        document.documentElement.style.setProperty('--cursor-x', `${x}px`);
+        document.documentElement.style.setProperty('--cursor-y', `${y}px`);
+
+        cards.forEach((c, i) => {
+          const rect = c.getBoundingClientRect();
+          const cx = rect.left + rect.width/2;
+          const cy = rect.top + rect.height/2;
+          const dx = (e.clientX || (e.touches && e.touches[0].clientX)) - cx;
+          const dy = (e.clientY || (e.touches && e.touches[0].clientY)) - cy;
+
+          const tiltX = (dy / rect.height) * -12;
+          const tiltY = (dx / rect.width) * 12;
+          const depth = 30 + i * 6;
+
+          c.style.transform = `perspective(900px) translateZ(${depth}px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+          c.style.boxShadow = `0 ${10 + Math.abs(tiltX)}px ${20 + Math.abs(tiltY)}px rgba(2,10,25,0.45)`;
+        });
+      }
+
+      window.addEventListener('mousemove', handleMove);
+      window.addEventListener('touchmove', handleMove, {passive:true});
+
+      setTimeout(()=> {
+        document.querySelectorAll('.service-card').forEach((c,i)=>{
+          c.style.transition = 'transform 450ms cubic-bezier(.2,.9,.2,1), box-shadow 350ms ease, opacity 450ms ease';
+          c.style.opacity = 1;
+          c.style.transform = c.style.transform.replace('translateZ(0px)', `translateZ(${30 + i*6}px)`);
+        });
+      }, 220);
+    })();
+    
+  const links = document.querySelectorAll('header.nav nav a');
+  const currentPage = window.location.pathname.split("/").pop();
+
+  links.forEach(link => {
+    if (link.getAttribute('href') === currentPage) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+  </script>
+
+  <!-- NEW CARDS JS FOR ZOOM + SCHEDULE -->
+  <script src="cards.js"></script>
+</body>
+</html>

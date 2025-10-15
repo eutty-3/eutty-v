@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Alex Portal — Client Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-bg">
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="logo-glow">A</div>
+        <div>
+          <h1>Alex Portal</h1>
+          <p class="sub">Virtual Assistant • Client Dashboard</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <div class="notif" id="notif-btn" title="Notifications"><span class="badge">3</span></div>
+        <div class="avatar" id="avatar">AL</div>
+      </div>
+    </header>
+
+    <main class="container">
+      <aside class="sidebar glass">
+        <nav>
+          <a class="active" href="#">Overview</a>
+          <a href="#">Tasks</a>
+          <a href="#">Messages</a>
+          <a href="#">Invoices</a>
+          <a href="#">Settings</a>
+        </nav>
+
+        <div class="user-card">
+          <div class="u-photo">C</div>
+          <div>
+            <strong id="client-name">Client</strong>
+            <small id="client-email">client@example.com</small>
+          </div>
+        </div>
+      </aside>
+
+      <section class="main glass">
+        <div class="welcome">
+          <h2>Welcome back, <span id="client-name-display">Client</span> </h2>
+          <p class="muted">Here’s your latest activity and updates.</p>
+        </div>
+
+        <div class="stats-grid" id="stats">
+          <div class="stat glass">
+            <div class="stat-title">Active Tasks</div>
+            <div class="stat-value" id="active-tasks">0</div>
+          </div>
+          <div class="stat glass">
+            <div class="stat-title">Completed</div>
+            <div class="stat-value" id="completed-tasks">0</div>
+          </div>
+          <div class="stat glass">
+            <div class="stat-title">This Week</div>
+            <div class="stat-value" id="week-tasks">0 tasks</div>
+          </div>
+          <div class="stat glass">
+            <div class="stat-title">Satisfaction</div>
+            <div class="stat-value" id="satisfaction">5 </div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <!-- Tasks Panel -->
+          <div class="panel glass">
+            <div class="panel-head">
+              <h3> Active Tasks</h3>
+              <button class="ghost" id="new-task-btn">+ New Task</button>
+            </div>
+            <ul class="task-list" id="task-list"></ul>
+          </div>
+
+          <!-- Messages Panel -->
+          <div class="panel glass">
+            <div class="panel-head">
+              <h3> Messages</h3>
+            </div>
+            <div class="messages" id="messages"></div>
+            <div class="message-send">
+              <input id="msg-input" placeholder="Type a message..." />
+              <button id="send-msg">Send</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small>© 2025 Eutty | Client Portal • Powered by Node.js</small>
+    </footer>
+  </div>
+
+  <script>
+  const backendURL = "http://localhost:3000";
+
+  // Show Notification
+  function showNotification(msg, success = true) {
+    const note = document.createElement('div');
+    note.className = 'euai-notification';
+    note.style.background = success
+      ? 'linear-gradient(135deg, #4caf50, #2e7d32)'
+      : 'linear-gradient(135deg, #e53935, #b71c1c)';
+    note.textContent = msg;
+    document.body.appendChild(note);
+
+    requestAnimationFrame(() => note.classList.add('show'));
+    setTimeout(() => {
+      note.classList.remove('show');
+      setTimeout(() => note.remove(), 500);
+    }, 3000);
+  }
+
+  // Load initial data
+  async function loadDashboard() {
+    try {
+      const res = await fetch(`${backendURL}/api/overview`);
+      const data = await res.json();
+
+      // Update stats
+      document.getElementById('active-tasks').textContent = data.activeTasks;
+      document.getElementById('completed-tasks').textContent = data.completedTasks;
+      document.getElementById('week-tasks').textContent = data.thisWeek + " tasks";
+      document.getElementById('satisfaction').textContent = data.satisfaction + " ";
+
+      // Update user
+      document.getElementById('client-name').textContent = data.user.name;
+      document.getElementById('client-name-display').textContent = data.user.name;
+      document.getElementById('client-email').textContent = data.user.email;
+
+      // Update tasks
+      const taskList = document.getElementById('task-list');
+      taskList.innerHTML = '';
+      data.tasks.forEach(task => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="tl-info">
+            <strong>${task.title}</strong>
+            <small>Due in ${task.due}</small>
+          </div>
+          <div class="tl-progress">
+            <progress value="${task.progress}" max="100"></progress>
+          </div>`;
+        taskList.appendChild(li);
+      });
+
+      // Update messages
+      const messages = document.getElementById('messages');
+      messages.innerHTML = '';
+      data.messages.forEach(msg => {
+        const div = document.createElement('div');
+        div.className = `msg ${msg.from === 'client' ? 'to' : 'from'}`;
+        div.innerHTML = `<div class="m-head">${msg.sender} • ${msg.time}</div><div class="m-body">${msg.text}</div>`;
+        messages.appendChild(div);
+      });
+
+    } catch (err) {
+      console.error(err);
+      showNotification(' Failed to load data', false);
+    }
+  }
+
+  // Send message
+  document.getElementById('send-msg').addEventListener('click', async () => {
+    const input = document.getElementById('msg-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    try {
+      const res = await fetch(`${backendURL}/api/messages`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        showNotification(' Message sent!', true);
+        input.value = '';
+        loadDashboard();
+      } else {
+        showNotification(' Message failed to send', false);
+      }
+    } catch (err) {
+      showNotification(' Server error', false);
+    }
+  });
+
+  // Add task (demo)
+  document.getElementById('new-task-btn').addEventListener('click', () => {
+    showNotification(' New task feature coming soon!', true);
+  });
+
+  loadDashboard();
+  </script>
+</body>
+</html>

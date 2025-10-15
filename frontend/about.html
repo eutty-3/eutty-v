@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | Alex Virtual Assistant</title>
+  <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="nav">
+    <div class="brand">Eutty<span class="accent">VA</span></div>
+    <nav>
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+      <a href="dashboard.html">Portal</a>
+    </nav>
+    </header>
+
+  <section id="about">
+    <div class="about-card glass">
+      <div class="about-text">
+        <h2>Meet <span>Alex</span></h2>
+        <p>
+          Hello! I’m <strong>Alex</strong>, a dedicated <strong>Virtual Assistant</strong> and
+          tech enthusiast passionate about helping clients simplify work, automate
+          tasks, and grow their businesses online.
+        </p>
+
+        <p>
+          I specialize in digital support, content organization, communication, and
+          administrative solutions — all powered by efficient tech workflows.
+        </p>
+
+        <ul class="skills">
+          <li> Smart Task Management</li>
+          <li> Tech & Admin Support</li>
+          <li> Digital Communication</li>
+          <li> Data Handling & Reports</li>
+          <li> Online Research</li>
+        </ul>
+
+        <a href="contact.html" class="btn">Contact Me</a>
+      </div>
+      <div class="about-photo">
+        <img src="assets/profile.png" alt="Alex - Virtual Assistant" />
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Eutty | Virtual Assistant</p>
+  </footer>
+  
+  <script>
+  const links = document.querySelectorAll('header.nav nav a');
+  const currentPage = window.location.pathname.split("/").pop();
+
+  links.forEach(link => {
+    if (link.getAttribute('href') === currentPage) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+</script>
+</body>
+</html>
