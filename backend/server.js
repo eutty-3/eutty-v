@@ -119,10 +119,11 @@ app.use((req, res, next) => {
     return next();
   }
 
-  res.sendFile(path.join(__dirname, 'frontend', 'dashboard.html'));
+  res.sendFile(path.join(__dirname, '../frontend/dashboard.html'));
 });
 
 /* ---------------- START SERVER ---------------- */
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
+
 });
