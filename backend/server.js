@@ -68,13 +68,8 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-/* ---------------- CATCH-ALL FOR FRONTEND ROUTES ---------------- */
-app.use((req, res, next) => {
-  if (req.path.startsWith('/api')) return next();
-  res.sendFile(path.join(__dirname, 'frontend', 'dashboard.html'));
-});
-
 /* ---------------- START SERVER ---------------- */
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
