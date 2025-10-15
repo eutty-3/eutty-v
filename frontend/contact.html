@@ -42,7 +42,7 @@
   <section class="contact-section">
     <div class="glass-card">
       <h2>Contact Me</h2>
-      <p>Let’s connect! Fill out the form below and I’ll get back to you soon.</p>
+      <p>Letâ€™s connect! Fill out the form below and Iâ€™ll get back to you soon.</p>
       <form id="contact-form" method="post">
         <div class="form-group">
           <label for="name">Your Name</label>
@@ -64,7 +64,7 @@
   <div id="euai-notification" class="euai-notification"></div>
 
   <footer>
-    <p>© 2025 Eutty Virtual Assistant | All rights reserved.</p>
+    <p>Â© 2025 Eutty Virtual Assistant | All rights reserved.</p>
   </footer>
 
   <script>
@@ -74,7 +74,7 @@
     // Determine API URL automatically
     const API_URL = window.location.hostname === "localhost"
       ? "http://localhost:3000"
-      : "https://your-live-backend-url.com"; // replace with your real domain later
+      : "https://eutty-v-1.onrender.com"; // replace with your real domain later
 
     // Show notification message
     function showNotification(msg) {
@@ -108,7 +108,7 @@
         const data = await res.json();
 
         if (data.success) {
-          showNotification(' Message sent! I’ll get back to you soon.');
+          showNotification(' Message sent! Iâ€™ll get back to you soon.');
           form.reset();
         } else {
           showNotification(' Failed to send: ' + (data.error || 'Unknown error.'));
