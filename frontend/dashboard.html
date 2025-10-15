@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Alex Portal — Client Dashboard</title>
+  <title>Alex Portal â€” Client Dashboard</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -12,8 +12,8 @@
       <div class="brand">
         <div class="logo-glow">A</div>
         <div>
-          <h1>Alex Portal</h1>
-          <p class="sub">Virtual Assistant • Client Dashboard</p>
+          <h1> Portal</h1>
+          <p class="sub">Virtual Assistant â€¢ Client Dashboard</p>
         </div>
       </div>
 
@@ -45,7 +45,7 @@
       <section class="main glass">
         <div class="welcome">
           <h2>Welcome back, <span id="client-name-display">Client</span> </h2>
-          <p class="muted">Here’s your latest activity and updates.</p>
+          <p class="muted">Hereâ€™s your latest activity and updates.</p>
         </div>
 
         <div class="stats-grid" id="stats">
@@ -93,7 +93,7 @@
     </main>
 
     <footer class="footer">
-      <small>© 2025 Eutty | Client Portal • Powered by Node.js</small>
+      <small>Â© 2025 Eutty | Client Portal â€¢ Powered by Node.js</small>
     </footer>
   </div>
 
@@ -156,7 +156,7 @@
       data.messages.forEach(msg => {
         const div = document.createElement('div');
         div.className = `msg ${msg.from === 'client' ? 'to' : 'from'}`;
-        div.innerHTML = `<div class="m-head">${msg.sender} • ${msg.time}</div><div class="m-body">${msg.text}</div>`;
+        div.innerHTML = `<div class="m-head">${msg.sender} â€¢ ${msg.time}</div><div class="m-body">${msg.text}</div>`;
         messages.appendChild(div);
       });
 
