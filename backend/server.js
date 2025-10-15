@@ -56,39 +56,7 @@ app.post('/api/contact', async (req, res) => {
     console.error('❌ Email send error:', err);
     res.status(500).json({ error: 'Failed to send message.' });
   }
-});
-
-/* ---------------- DASHBOARD DATA (OVERVIEW) ---------------- */
-app.get('/api/overview', (req, res) => {
-  const mockData = {
-    user: {
-      name: "Alex Minyira",
-      email: "minyiralex3@gmail.com",
-    },
-    activeTasks: 4,
-    completedTasks: 12,
-    thisWeek: 6,
-    satisfaction: 5,
-    tasks: [
-      { title: "Deploy dashboard to Replit", due: "2 days", progress: 85 },
-      { title: "Fix email endpoint", due: "1 day", progress: 100 },
-      { title: "Add AI assistant section", due: "3 days", progress: 60 },
-      { title: "Finalize backend structure", due: "4 days", progress: 45 },
-    ],
-    messages: [
-      { sender: "System", from: "server", text: "Welcome back, Alex!", time: "Today 09:45 AM" },
-      { sender: "Client", from: "client", text: "Please confirm if the form works now.", time: "Today 10:12 AM" },
-      { sender: "You", from: "server", text: "Yes, email was configured successfully ✅", time: "Today 10:15 AM" },
-    ],
-  };
-
-  res.json(mockData);
-});
-
-/* ---------------- MESSAGES ENDPOINT ---------------- */
-let chatMessages = [
-  { sender: "System", from: "server", text: "Welcome to the portal!", time: "09:00 AM" },
-];
+});
 
 app.post('/api/contact', (req, res) => {
   const { name, email, message } = req.body;
