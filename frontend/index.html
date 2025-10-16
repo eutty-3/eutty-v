@@ -159,7 +159,7 @@
     <div class="intro-text">
       <h1 class="hero-title">Welcome to Eutty Virtual Assistant</h1>
       <p>
-        Eutty Virtual Assistant was developed in to provide seamless digital support for users navigating online applications, services, and cyber solutions. The system was designed to simplify the digital journey for everyone.
+        Eutty Virtual Assistant was developed in 2025 to provide seamless digital support for users navigating online applications, services, and cyber solutions. The system was designed to simplify the digital journey for everyone.
       </p>
       <p>
         The purpose of Eutty Virtual Assistant is to empower users with fast, secure, and professional assistance. Whether you need help with online applications, account recovery, or digital document management, we're here for you.
@@ -227,7 +227,7 @@
     <small>© 2025 Eutty | Virtual Assistant</small>
   </footer>
 
-  <!-- ORIGINAL 3D TILT JS KEPT -->
+  <!-- UPDATED 3D TILT JS FOR CARDS -->
   <script>
     (function(){
       const cards = document.querySelectorAll('[data-role="card"]');
@@ -256,8 +256,23 @@
         });
       }
 
+      function resetCards() {
+        cards.forEach((c, i) => {
+          c.style.transform = `perspective(900px) translateZ(${30 + i * 6}px) rotateX(0deg) rotateY(0deg)`;
+          c.style.boxShadow = `0 10px 20px rgba(2,10,25,0.45)`;
+        });
+      }
+
       window.addEventListener('mousemove', handleMove);
       window.addEventListener('touchmove', handleMove, {passive:true});
+      window.addEventListener('mouseleave', resetCards);
+      window.addEventListener('touchend', resetCards);
+
+      // Also reset on leaving each card individually (optional)
+      cards.forEach((c, i) => {
+        c.addEventListener('mouseleave', resetCards);
+        c.addEventListener('touchend', resetCards, {passive:true});
+      });
 
       setTimeout(()=> {
         document.querySelectorAll('.service-card').forEach((c,i)=>{
