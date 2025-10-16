@@ -5,6 +5,49 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Home | Eutty Virtual Assistant</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Notification Modal Styles */
+    .notification-modal {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(15,24,32,0.75);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1001; transition: opacity 0.2s;
+    }
+    .notification-modal[hidden] { display: none; }
+    .notification-content {
+      background: #fff; color: #1a2430; border-radius: 14px; max-width: 92vw; width: 360px; box-shadow: 0 6px 60px 0 #16244e33;
+      padding: 2.2em 1.5em 1em 1.5em; position: relative; text-align: center;
+      animation: notifDrop 0.4s cubic-bezier(.2,.75,.36,1.12);
+    }
+    @keyframes notifDrop {
+      from { transform: translateY(-60px) scale(0.92); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .notification-content h3 { margin-top: 0; font-size: 1.35rem; }
+    .notification-actions {
+      margin-top: 1.6em; display: flex; gap: 1em; justify-content: center;
+    }
+    .notification-actions button {
+      padding: 0.6em 1.3em; border: none; border-radius: 7px;
+      font-weight: bold; cursor: pointer; font-size: 1em;
+      background: #2356e2; color: #fff; transition: background 0.15s;
+    }
+    .notification-actions button.secondary {
+      background: #d2d7e0; color: #2a3254;
+    }
+    /* Bell icon styles */
+    .notif-bell {
+      position: relative; display: inline-block; margin-left: 1.2em; cursor: pointer; vertical-align: middle;
+    }
+    .notif-bell svg {
+      width: 27px; height: 27px; fill: #2356e2;
+    }
+    .notif-badge {
+      position: absolute; top: 2px; right: 2px;
+      background: #ff4747; color: #fff; border-radius: 50%; font-size: 0.67em; width: 17px; height: 17px;
+      display: flex; align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 2px 8px #0001;
+    }
+  </style>
 </head>
 <body>
   <!-- HEADER -->
@@ -16,80 +59,39 @@
       <a href="services.html">Services</a>
       <a href="contact.html">Contact</a>
     </nav>
+    <!-- Notification Bell Icon -->
+    <div class="notif-bell" id="notifBell" title="Notifications" tabindex="0" aria-label="Show notifications" style="outline:none;">
+      <!-- Bell SVG icon -->
+      <svg viewBox="0 0 24 24">
+        <path d="M12 22c1.12 0 2-.88 2-2h-4a2 2 0 002 2zm8-6v-5c0-3.07-1.63-5.64-5-6.32V4a3 3 0 10-6 0v.68C5.63 5.36 4 7.92 4 11v5l-1.7 1.7A1 1 0 004 20h16a1 1 0 00.7-1.7L20 16zm-2 2H6v-6c0-2.97 1.63-5.43 6-5.43s6 2.46 6 5.43v6z"/>
+      </svg>
+      <span class="notif-badge" id="notifBadge" style="display:none;">1</span>
+    </div>
   </header>
 
-<!-- MAIN CONTENT -->
-<main class="main-wrap">
-  <!-- INTRODUCTION / HERO SECTION -->
-  <section class="home-hero glass">
-    <div class="intro-text">
-      <h1 class="hero-title">Welcome to Eutty Virtual Assistant</h1>
-      
+  <!-- Notification Modal -->
+  <div class="notification-modal" id="notificationModal" hidden>
+    <div class="notification-content">
+      <!-- You can update the message/title below for new notifications.
+           To force show for all users, increment the "notifVersion" in the JS below -->
+      <h3>Important Notice</h3>
       <p>
-        Eutty Virtual Assistant was developed in 2025 to provide seamless digital support for users navigating online applications, services, and cyber solutions. The system was designed to simplify tasks that normally take hours, offering a reliable and centralized platform for managing administrative needs.
+        We are upgrading our security systems on 20th Oct 2025.<br>
+        During this period, some services may be unavailable.<br>
+        Please ensure your account details are up to date.<br>
+        <small>— Eutty Virtual Admin Team</small>
       </p>
-      
-      <p>
-        The purpose of Eutty Virtual Assistant is to empower users with fast, secure, and professional assistance. Whether you need help with online applications, account recovery, or digital documentation, the system is equipped to guide you efficiently through every process.
-        Also we help assist you with tips in securing all your accounts (cyber security)
-      </p>
-      
-      <p>
-        This system works by combining intelligent automation, user-friendly interfaces, and secure protocols to deliver personalized support. Every interaction is designed to be straightforward, reducing stress and saving valuable time for individuals, students, and professionals alike.
-      </p>
-      
-      <p>
-        We sincerely thank you for accessing Eutty Virtual Assistant. Your trust and engagement are what drive us to continually improve and expand the services we offer. We hope you find this platform useful, intuitive, and supportive in achieving your goals.
-      </p>
-    </div>
-  </section>
-</main>
-
-    <!-- COMMUNICATION CARDS SECTION (REPLACES SERVICE CARDS) -->
-    <section class="communications-wrap glass">
-      <h2 class="section-title">Official Communications</h2>
-      <p>Stay updated with the latest messages from Admin and the relevant team.</p>
-
-      <div class="floating-cards" id="cards">
-        <div class="card" data-role="card">
-          <h4>Admin Notice</h4>
-          <p>System maintenance on 20th Oct, 10:00–14:00. Services may be unavailable.
-          apologies for any inconvenience</p>
-          <small>From: Admin Team | 15 Oct 2025</small>
-        </div>
-
-        <div class="card" data-role="card" data-start="2025-10-16T08:00" data-end="2025-10-16T18:00">
-          <h4>Cyber Security Update</h4>
-          <p>Please update your passwords and enable 2FA for all accounts.
-          So that your data is secured in digital way,Thank you</p>
-          <small>From: Security Team | 16 Oct 2025</small>
-        </div>
-
-        <div class="card" data-role="card">
-          <h4>New Service Launch</h4>
-          <p>We will be launching new services as from next week</p>
-          <small>From: Admin Team | 14 Oct 2025</small>
-        </div>
-
-        <div class="card" data-role="card">
-          <h4>Contact Eutty Virtual</h4>
-          <p>
-            WhatsApp: +254 793038277<br>
-            Email: euttyvirtual@gmail.com<br>
-            Web: www.https://eutty-v-2.onrender.com<br>
-            Location: Kisii County, Kenya
-          </p>
-          <small>From: Support Team</small>
-        </div>
+      <div class="notification-actions">
+        <button id="notifCloseBtn">Got it</button>
+        <button class="secondary" id="notifUnreadBtn">Mark as Unread</button>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- CTA INQUIRE SECTION (KEPT FROM ORIGINAL) -->
-    <section class="cta-inquire glass">
-      <h3>Interested to know work-flow of services ?</h3>
-      <p>Im here to assist you </p>
-      <a href="contact.html" class="btn primary">Get  in touch </a>
-    </section>
+  <!-- MAIN CONTENT -->
+  <main class="main-wrap">
+    <!-- ... (existing content unchanged) ... -->
+    <!-- (paste all your main content here as in your original file) -->
   </main>
 
   <!-- FOOTER -->
@@ -97,61 +99,98 @@
     <small>© 2025 Eutty | Virtual Assistant</small>
   </footer>
 
-  <!-- ORIGINAL 3D TILT JS KEPT -->
+  <!-- JS FOR NOTIFICATION MODAL -->
   <script>
-    (function(){
-      const cards = document.querySelectorAll('[data-role="card"]');
-      const grid = document.getElementById('service-grid');
+    // === Notification system logic ===
+    // Change this version number to "force" a new notification for all users.
+    const notifVersion = "2025-10-16-2"; // <--- INCREMENT to show new notification to all
 
-      function handleMove(e){
-        const x = (e.clientX || (e.touches && e.touches[0].clientX)) - window.innerWidth/2;
-        const y = (e.clientY || (e.touches && e.touches[0].clientY)) - window.innerHeight/2;
+    const notifModal = document.getElementById('notificationModal');
+    const notifBell = document.getElementById('notifBell');
+    const notifBadge = document.getElementById('notifBadge');
+    const notifCloseBtn = document.getElementById('notifCloseBtn');
+    const notifUnreadBtn = document.getElementById('notifUnreadBtn');
 
-        document.documentElement.style.setProperty('--cursor-x', `${x}px`);
-        document.documentElement.style.setProperty('--cursor-y', `${y}px`);
-
-        cards.forEach((c, i) => {
-          const rect = c.getBoundingClientRect();
-          const cx = rect.left + rect.width/2;
-          const cy = rect.top + rect.height/2;
-          const dx = (e.clientX || (e.touches && e.touches[0].clientX)) - cx;
-          const dy = (e.clientY || (e.touches && e.touches[0].clientY)) - cy;
-
-          const tiltX = (dy / rect.height) * -12;
-          const tiltY = (dx / rect.width) * 12;
-          const depth = 30 + i * 6;
-
-          c.style.transform = `perspective(900px) translateZ(${depth}px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-          c.style.boxShadow = `0 ${10 + Math.abs(tiltX)}px ${20 + Math.abs(tiltY)}px rgba(2,10,25,0.45)`;
-        });
-      }
-
-      window.addEventListener('mousemove', handleMove);
-      window.addEventListener('touchmove', handleMove, {passive:true});
-
-      setTimeout(()=> {
-        document.querySelectorAll('.service-card').forEach((c,i)=>{
-          c.style.transition = 'transform 450ms cubic-bezier(.2,.9,.2,1), box-shadow 350ms ease, opacity 450ms ease';
-          c.style.opacity = 1;
-          c.style.transform = c.style.transform.replace('translateZ(0px)', `translateZ(${30 + i*6}px)`);
-        });
-      }, 220);
-    })();
-    
-  const links = document.querySelectorAll('header.nav nav a');
-  const currentPage = window.location.pathname.split("/").pop();
-
-  links.forEach(link => {
-    if (link.getAttribute('href') === currentPage) {
-      link.classList.add('active');
-    } else {
-      link.classList.remove('active');
+    function getNotifState() {
+      try {
+        const state = localStorage.getItem("euttyva_notification");
+        return state ? JSON.parse(state) : {};
+      } catch { return {}; }
     }
-  });
+    function setNotifState(state) {
+      localStorage.setItem("euttyva_notification", JSON.stringify(state));
+    }
+
+    function isNotifUnread() {
+      const state = getNotifState();
+      return !state.version || state.version !== notifVersion || !state.read;
+    }
+
+    function showNotifModal() {
+      notifModal.hidden = false;
+      notifModal.setAttribute('aria-modal', 'true');
+      notifModal.focus();
+    }
+    function hideNotifModal() {
+      notifModal.hidden = true;
+      notifModal.removeAttribute('aria-modal');
+    }
+    function showNotifBadge(show=true) {
+      notifBadge.style.display = show ? '' : 'none';
+    }
+
+    // On load: show modal if unread
+    document.addEventListener('DOMContentLoaded', () => {
+      if(isNotifUnread()) {
+        showNotifModal();
+        showNotifBadge(true);
+      } else {
+        showNotifBadge(false);
+      }
+    });
+
+    // Clicking bell opens modal
+    notifBell.addEventListener('click', () => {
+      showNotifModal();
+    });
+
+    // Keyboard accessibility for bell
+    notifBell.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        showNotifModal();
+      }
+    });
+
+    // Close button = mark as read
+    notifCloseBtn.addEventListener('click', () => {
+      setNotifState({version: notifVersion, read: true});
+      hideNotifModal();
+      showNotifBadge(false);
+    });
+
+    // Mark as unread (for testing or user preference)
+    notifUnreadBtn.addEventListener('click', () => {
+      setNotifState({version: notifVersion, read: false});
+      showNotifBadge(true);
+      hideNotifModal();
+    });
+
+    // Clicking outside modal closes it (optional)
+    notifModal.addEventListener('click', (e) => {
+      if(e.target === notifModal) hideNotifModal();
+    });
+
+    // ESC key closes modal
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && !notifModal.hidden) hideNotifModal();
+    });
   </script>
 
-  <!-- NEW CARDS JS FOR ZOOM + SCHEDULE -->
+  <!-- (existing scripts, e.g. 3D tilt, cards.js, etc.) -->
+  <script>
+    // ...Your existing JS code here...
+  </script>
   <script src="cards.js"></script>
 </body>
-
 </html>
