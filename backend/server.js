@@ -12,7 +12,7 @@ const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS; // ❗ This MUST be your Gmail App Password on Render 
 const FRONTEND_URL = process.env.FRONTEND_URL || '*';
 const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
-const SMTP_PORT = process.env.SMTP_PORT || 465; // Use 465 for secure: true
+const SMTP_PORT = process.env.SMTP_PORT || 587; // Use 587 for secure: true
 
 if (!EMAIL_USER || !EMAIL_PASS) {
   console.warn('⚠️ WARNING: EMAIL credentials not set in environment variables');
