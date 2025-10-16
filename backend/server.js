@@ -9,10 +9,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 // Load all necessary environment variables
 const EMAIL_USER = process.env.EMAIL_USER;
-const EMAIL_PASS = process.env.EMAIL_PASS; // ❗ This MUST be your Gmail App Password on Render 
+const EMAIL_PASS = process.env.EMAIL_PASS; 
 const FRONTEND_URL = process.env.FRONTEND_URL || '*';
 const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
-const SMTP_PORT = process.env.SMTP_PORT || 587; // Use 587 for secure: true
+const SMTP_PORT = process.env.SMTP_PORT || 587; // Set to 587
 
 if (!EMAIL_USER || !EMAIL_PASS) {
   console.warn('⚠️ WARNING: EMAIL credentials not set in environment variables');
@@ -24,7 +24,6 @@ app.use(express.static(path.join(__dirname, 'frontend')));
 
 // CORS
 app.use((req, res, next) => {
-  // Ensure the frontend URL is correct and secure
   res.setHeader('Access-Control-Allow-Origin', FRONTEND_URL); 
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -33,16 +32,19 @@ app.use((req, res, next) => {
 });
 
 /* ---------------- CONTACT FORM ROUTE ---------------- */
-// 🟢 FIXED: Using variables and removed the 'tls' block for secure connection on port 465
 const transporter = nodemailer.createTransport({
   host: SMTP_HOST,
   port: SMTP_PORT,
-  secure: SMTP_PORT == 465, // Set to true if 465, false if 587
+  // 🟢 Set secure to true only for port 465. If SMTP_PORT is 587, this is false.
+  secure: SMTP_PORT == 465, 
   auth: {
     user: EMAIL_USER,
-    pass: EMAIL_PASS, 
+    pass: EMAIL_PASS, // This must be the 16-character Gmail App Password
   },
+  // 🟢 Explicitly require TLS (STARTTLS) for ports like 587
+  requireTLS: SMTP_PORT == 587, 
 });
+
 
 // Test transporter
 transporter.verify((err, success) => {
