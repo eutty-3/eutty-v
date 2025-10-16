@@ -5,6 +5,121 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Home | Eutty Virtual Assistant</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+  /* --- Notification Modal + Dropdown Styles --- */
+  .notification-modal {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(15,24,32,0.72); display: flex;
+    align-items: center; justify-content: center; z-index: 2001;
+    opacity: 0; pointer-events: none; transition: opacity .28s cubic-bezier(.23,1.1,.32,1);
+  }
+  .notification-modal.active {
+    opacity: 1; pointer-events: auto;
+    animation: fadeInBg .38s;
+  }
+  @keyframes fadeInBg { from { opacity: 0; } to { opacity: 1; } }
+  .notification-content {
+    background: #fff; color: #1a2430; border-radius: 14px; max-width: 92vw; width: 370px;
+    box-shadow: 0 8px 64px 0 #16244e35;
+    padding: 2.2em 1.5em 1.1em 1.5em; position: relative; text-align: center;
+    transform: scale(0.90); opacity: 0; transition: transform .23s, opacity .23s;
+    animation: notifPopIn .32s cubic-bezier(.2,.75,.36,1.13);
+  }
+  .notification-modal.active .notification-content {
+    transform: scale(1); opacity: 1;
+  }
+  @keyframes notifPopIn {
+    from { transform: scale(0.8) translateY(-40px); opacity: 0; }
+    to   { transform: scale(1) translateY(0px); opacity: 1; }
+  }
+  .notification-content h3 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    display: flex; align-items: center; gap: 0.45em; justify-content: center;
+  }
+  .notification-icon {
+    font-size: 2em;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .notification-content .from {
+    color: #506082; font-size: 0.98em; margin-top: 0.5em; margin-bottom: 0.2em;
+  }
+  .notification-content .date {
+    color: #a8afc4; font-size: 0.92em; margin-bottom: 0.2em;
+  }
+  .notification-actions {
+    margin-top: 1.5em; display: flex; gap: 1em; justify-content: center;
+  }
+  .notification-actions button {
+    padding: 0.6em 1.3em; border: none; border-radius: 7px;
+    font-weight: bold; cursor: pointer; font-size: 1em;
+    background: #2356e2; color: #fff; transition: transform .12s, background .16s;
+    box-shadow: 0 2px 8px #2356e229;
+  }
+  .notification-actions button.secondary {
+    background: #d2d7e0; color: #2a3254;
+  }
+  .notification-actions button:active {
+    transform: scale(0.96);
+  }
+
+  /* --- Notification type colors/icons --- */
+  .notification-content.info   { border-top: 6px solid #2356e2; }
+  .notification-content.success{ border-top: 6px solid #1bbf54; }
+  .notification-content.warning{ border-top: 6px solid #ffc600; }
+  .notification-content.error  { border-top: 6px solid #ff4747; }
+  .notification-icon.info   { color: #2356e2; }
+  .notification-icon.success{ color: #1bbf54; }
+  .notification-icon.warning{ color: #ffc600; }
+  .notification-icon.error  { color: #ff4747; }
+
+  .notif-bell {
+    position: relative; display: inline-block; margin-left: 1.2em; cursor: pointer; vertical-align: middle;
+  }
+  .notif-bell svg { width: 27px; height: 27px; fill: #2356e2; }
+  .notif-badge {
+    position: absolute; top: 2px; right: 2px;
+    background: #ff4747; color: #fff; border-radius: 50%; font-size: 0.67em; width: 17px; height: 17px;
+    display: flex; align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 2px 8px #0001;
+  }
+
+  /* --- Notification Dropdown --- */
+  #notifDropdown {
+    display: none; position: absolute; right: 0; top: 44px;
+    background: #fff; min-width: 320px; max-width: 94vw; border-radius: 12px;
+    box-shadow: 0 6px 32px #1a244078; z-index: 2002; padding: 0.6em 0;
+    border: 1.5px solid #deecff;
+    animation: notifDropDown .21s cubic-bezier(.18,.9,.4,1.17);
+  }
+  @keyframes notifDropDown {
+    from { opacity: 0; transform: translateY(-14px) scale(0.97);}
+    to   { opacity: 1; transform: translateY(0) scale(1);}
+  }
+  #notifDropdown.active { display: block; }
+  .notif-list {
+    list-style: none; margin: 0; padding: 0;
+  }
+  .notif-list-item {
+    padding: 0.85em 1.2em 0.7em 1.2em; display: flex; align-items: flex-start; gap: 0.8em;
+    cursor: pointer; border-bottom: 1px solid #f1f5fa; transition: background .12s;
+  }
+  .notif-list-item:last-child { border-bottom: none; }
+  .notif-list-item.unread { background: #edf2ff; }
+  .notif-list-item:hover   { background: #f7faff; }
+  .notif-list-item .notif-item-icon {
+    font-size: 1.45em; margin-top: 2px;
+  }
+  .notif-list-item .notif-item-title {
+    font-weight: 600; color: #1a2430; font-size: 1em;
+  }
+  .notif-list-item .notif-item-date {
+    color: #8ea3c7; font-size: 0.90em;
+  }
+  .notif-list-empty {
+    padding: 1.2em 1.2em 1.2em 1.5em; color: #a2adc6; font-style: italic;
+  }
+  </style>
 </head>
 <body>
   <!-- HEADER -->
@@ -16,7 +131,26 @@
       <a href="services.html">Services</a>
       <a href="contact.html">Contact</a>
     </nav>
+    <!-- Notification Bell Icon -->
+    <div class="notif-bell" id="notifBell" title="Notifications" tabindex="0" aria-label="Show notifications" style="outline:none;">
+      <!-- Bell SVG icon -->
+      <svg viewBox="0 0 24 24">
+        <path d="M12 22c1.12 0 2-.88 2-2h-4a2 2 0 002 2zm8-6v-5c0-3.07-1.63-5.64-5-6.32V4a3 3 0 10-6 0v.68C5.63 5.36 4 7.92 4 11v5l-1.7 1.7A1 1 0 004 20h16a1 1 0 00.7-1.7L20 16zm-2 2H6v-6c0-2.97 1.63-5.43 6-5.43s6 2.46 6 5.43v6z"/>
+      </svg>
+      <span class="notif-badge" id="notifBadge" style="display:none;">1</span>
+    </div>
+    <!-- Notification Dropdown List -->
+    <div id="notifDropdown">
+      <ul class="notif-list" id="notifList"></ul>
+    </div>
   </header>
+
+  <!-- Notification Modal -->
+  <div class="notification-modal" id="notificationModal" hidden>
+    <div class="notification-content" id="notifModalContent">
+      <!-- Dynamic content via JS -->
+    </div>
+  </div>
 
 <!-- MAIN CONTENT -->
 <main class="main-wrap">
@@ -24,22 +158,18 @@
   <section class="home-hero glass">
     <div class="intro-text">
       <h1 class="hero-title">Welcome to Eutty Virtual Assistant</h1>
-      
       <p>
-        Eutty Virtual Assistant was developed in 2025 to provide seamless digital support for users navigating online applications, services, and cyber solutions. The system was designed to simplify tasks that normally take hours, offering a reliable and centralized platform for managing administrative needs.
+        Eutty Virtual Assistant was developed in 2025 to provide seamless digital support for users navigating online applications, services, and cyber solutions. The system was designed to simplify the digital journey for everyone.
       </p>
-      
       <p>
-        The purpose of Eutty Virtual Assistant is to empower users with fast, secure, and professional assistance. Whether you need help with online applications, account recovery, or digital documentation, the system is equipped to guide you efficiently through every process.
+        The purpose of Eutty Virtual Assistant is to empower users with fast, secure, and professional assistance. Whether you need help with online applications, account recovery, or digital document management, we're here for you.
         Also we help assist you with tips in securing all your accounts (cyber security)
       </p>
-      
       <p>
-        This system works by combining intelligent automation, user-friendly interfaces, and secure protocols to deliver personalized support. Every interaction is designed to be straightforward, reducing stress and saving valuable time for individuals, students, and professionals alike.
+        This system works by combining intelligent automation, user-friendly interfaces, and secure protocols to deliver personalized support. Every interaction is designed to be straightforward, reducing your effort and saving time.
       </p>
-      
       <p>
-        We sincerely thank you for accessing Eutty Virtual Assistant. Your trust and engagement are what drive us to continually improve and expand the services we offer. We hope you find this platform useful, intuitive, and supportive in achieving your goals.
+        We sincerely thank you for accessing Eutty Virtual Assistant. Your trust and engagement are what drive us to continually improve and expand the services we offer. We hope you find this platform helpful!
       </p>
     </div>
   </section>
@@ -150,8 +280,183 @@
   });
   </script>
 
+  <!-- Notification Data & Logic -->
+  <script>
+  // --- Notification Data ---
+  // You can add more notifications to this array.
+  // Each notification needs a unique id and a type.
+  // Types: "info", "warning", "error", "success"
+  const notifications = [
+    {
+      id: "upgrade-2025-10-20",
+      type: "warning",
+      title: "Upcoming Security Upgrade",
+      message: "We are upgrading our security systems on 20th Oct 2025. Some services may be unavailable. Please ensure your account details are up to date.",
+      date: "2025-10-16",
+      from: "Eutty Virtual Admin Team",
+    },
+    {
+      id: "new-feature-2025-10-18",
+      type: "info",
+      title: "New Feature Launch",
+      message: "A new secure document upload service will be available next week. Stay tuned!",
+      date: "2025-10-15",
+      from: "Eutty Virtual Team",
+    }
+  ];
+
+  // --- Notification State Helpers ---
+  const notifVersion = "2025-10-16-2"; // Increment for breaking changes to notification states
+
+  function getNotifState() {
+    try { return JSON.parse(localStorage.getItem("euttyva_notification") || '{}'); } catch { return {}; }
+  }
+  function setNotifState(state) {
+    localStorage.setItem("euttyva_notification", JSON.stringify(state));
+  }
+  function getUnreadIds() {
+    const state = getNotifState();
+    return notifications.filter(n => !state[n.id] || !state[n.id].read).map(n => n.id);
+  }
+  function markAsRead(id) {
+    const state = getNotifState();
+    state[id] = {read: true, version: notifVersion};
+    setNotifState(state);
+  }
+  function markAsUnread(id) {
+    const state = getNotifState();
+    state[id] = {read: false, version: notifVersion};
+    setNotifState(state);
+  }
+  function isRead(id) {
+    const state = getNotifState();
+    return state[id] && state[id].read && state[id].version === notifVersion;
+  }
+
+  // --- Icon Map by Type ---
+  const notifTypeIcons = {
+    info:    `<span class="notification-icon info"    title="Info">&#8505;</span>`,
+    warning: `<span class="notification-icon warning" title="Warning">&#9888;</span>`,
+    error:   `<span class="notification-icon error"   title="Alert">&#9940;</span>`,
+    success: `<span class="notification-icon success" title="Success">&#10003;</span>`
+  };
+
+  // --- Notification Modal Logic ---
+  const notifModal = document.getElementById('notificationModal');
+  const notifModalContent = document.getElementById('notifModalContent');
+  let currentModalId = null;
+
+  function openNotifModal(id) {
+    const notif = notifications.find(n => n.id === id);
+    if (!notif) return;
+    currentModalId = id;
+    notifModalContent.className = `notification-content ${notif.type}`;
+    notifModalContent.innerHTML = `
+      <h3>${notifTypeIcons[notif.type] || ''}${notif.title}</h3>
+      <div class="date">${notif.date}</div>
+      <div class="from">${notif.from}</div>
+      <p>${notif.message}</p>
+      <div class="notification-actions">
+        <button id="notifCloseBtn">Got it</button>
+        <button class="secondary" id="notifUnreadBtn">Mark as Unread</button>
+      </div>
+    `;
+    notifModal.hidden = false;
+    notifModal.classList.add("active");
+    markAsRead(id);
+    renderNotifBadge();
+    renderNotifList();
+    // Button handlers (re-attach after every render!)
+    document.getElementById('notifCloseBtn').onclick = () => closeNotifModal();
+    document.getElementById('notifUnreadBtn').onclick = () => {
+      markAsUnread(id);
+      closeNotifModal();
+      renderNotifBadge();
+      renderNotifList();
+    };
+  }
+  function closeNotifModal() {
+    notifModal.classList.remove("active");
+    setTimeout(()=>{ notifModal.hidden = true; }, 220);
+    currentModalId = null;
+  }
+
+  // Close modal on click outside or ESC
+  notifModal.onclick = e => { if (e.target === notifModal) closeNotifModal(); };
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !notifModal.hidden) closeNotifModal();
+  });
+
+  // --- Notification Bell & Badge ---
+  const notifBell = document.getElementById('notifBell');
+  const notifBadge = document.getElementById('notifBadge');
+  function renderNotifBadge() {
+    const unreadCount = getUnreadIds().length;
+    notifBadge.style.display = unreadCount > 0 ? '' : 'none';
+    notifBadge.textContent = unreadCount;
+  }
+
+  // --- Notification Dropdown ---
+  const notifDropdown = document.getElementById('notifDropdown');
+  const notifList = document.getElementById('notifList');
+  function renderNotifList() {
+    notifList.innerHTML = '';
+    if (notifications.length === 0) {
+      notifList.innerHTML = `<li class="notif-list-empty">No notifications.</li>`;
+      return;
+    }
+    notifications.forEach(notif => {
+      const isUnread = !isRead(notif.id);
+      const li = document.createElement('li');
+      li.className = `notif-list-item${isUnread ? ' unread' : ''}`;
+      li.innerHTML = `
+        <span class="notif-item-icon ${notif.type}">${notifTypeIcons[notif.type]}</span>
+        <div style="flex:1 1 auto">
+          <div class="notif-item-title">${notif.title}</div>
+          <div class="notif-item-date">${notif.date}</div>
+        </div>
+        ${isUnread ? '<span style="margin-left:0.5em;color:#2356e2;font-size:1.15em;font-weight:bold;">•</span>' : ''}
+      `;
+      li.onclick = () => {
+        notifDropdown.classList.remove('active');
+        openNotifModal(notif.id);
+      };
+      notifList.appendChild(li);
+    });
+  }
+
+  // --- Bell Click & Dropdown Logic ---
+  notifBell.onclick = (e) => {
+    if (notifDropdown.classList.contains('active')) {
+      notifDropdown.classList.remove('active');
+    } else {
+      renderNotifList();
+      notifDropdown.classList.add('active');
+    }
+    e.stopPropagation();
+  };
+  notifBell.onkeydown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      notifBell.onclick(e);
+    }
+  };
+  document.addEventListener('click', (e) => {
+    if (!notifDropdown.contains(e.target) && !notifBell.contains(e.target)) {
+      notifDropdown.classList.remove('active');
+    }
+  });
+
+  // --- On Load: show first unread notification modal ---
+  document.addEventListener('DOMContentLoaded', () => {
+    renderNotifBadge();
+    renderNotifList();
+    // Show modal for first unread notification
+    const unread = getUnreadIds();
+    if (unread.length) openNotifModal(unread[0]);
+  });
+  </script>
+
   <!-- NEW CARDS JS FOR ZOOM + SCHEDULE -->
   <script src="cards.js"></script>
 </body>
-
 </html>
