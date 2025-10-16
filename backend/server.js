@@ -33,7 +33,7 @@ app.post('/api/contact', async (req, res) => {
 
   try {
     const data = await resend.emails.send({
-      from: 'Alex <onboarding@resend.dev>', // You can change this once you verify a domain
+      from: 'EuttyVA<onboarding@resend.dev>', // You can change this once you verify a domain
       to: 'euttyvirtual@gmail.com', // Replace with your real inbox
       subject: `📩 New Message from EuttyVA: ${name}`,
       html: `
