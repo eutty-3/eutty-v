@@ -476,10 +476,10 @@
       }
 
       try {
-        const res = await fetch(`${API_URL}/send-email`, {
-          method: 'POST',
-          body: fd
-        });
+        const res = await fetch(`${API_URL}/api/contact`, {  // <-- change here
+  method: 'POST',
+  body: fd
+});
 
         const data = await res.json();
         if (data && (data.success || data.message)) {
