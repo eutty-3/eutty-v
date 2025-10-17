@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact | Eutty Virtual Assistant.</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 
   <style>
-    /* Notification (keeps your original look, slightly tuned) */
     .euai-notification {
       position: fixed;
       bottom: 20px;
@@ -18,131 +17,11 @@
       padding: 12px 20px;
       border-radius: 8px;
       opacity: 0;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transition: opacity 0.3s ease;
       z-index: 1000;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.4);
     }
     .euai-notification.show {
       opacity: 1;
-      transform: translateX(-50%) translateY(-6px);
-    }
-
-    /* Basic form spacing (keeps your visuals consistent) */
-    .form-group { margin-bottom: 15px; }
-    label { font-weight: bold; display: block; margin-bottom: 6px; }
-    input[type="file"] { display: none; } /* hidden inputs handled by JS UI */
-
-    /* Attachment UI - floating paperclip + circular popup */
-    .attachment-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    /* floating paperclip button */
-    .attach-btn {
-      width: 48px;
-      height: 48px;
-      background: #111;
-      border-radius: 50%;
-      display: inline-grid;
-      place-items: center;
-      cursor: pointer;
-      box-shadow: 0 6px 18px rgba(0,255,136,0.08);
-      transition: transform 0.15s ease;
-    }
-    .attach-btn:hover { transform: scale(1.05); }
-
-    .attach-btn svg { width: 22px; height: 22px; fill: none; stroke: #00ff88; stroke-width: 2; }
-
-    /* circular popup */
-    .attach-popup {
-      position: absolute;
-      bottom: 60px;
-      left: 50%;
-      transform: translateX(-50%) translateY(10px);
-      display: grid;
-      grid-template-columns: repeat(2, 56px);
-      gap: 10px;
-      padding: 12px;
-      background: rgba(10,10,10,0.95);
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      z-index: 1500;
-    }
-    .attach-popup.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-      pointer-events: auto;
-    }
-
-    .attach-option {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: #0e0e0e;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #fff;
-      gap: 6px;
-      text-align: center;
-      font-size: 11px;
-      padding: 6px;
-      user-select: none;
-    }
-    .attach-option:hover { transform: translateY(-4px); }
-
-    .attach-option svg { width: 22px; height: 22px; stroke: #00ff88; stroke-width: 1.6; }
-
-    /* preview area for attachments */
-    .attachment-preview {
-      margin-top: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .preview-item {
-      background: rgba(255,255,255,0.04);
-      border-radius: 8px;
-      padding: 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 96px;
-      max-width: 220px;
-    }
-    .preview-thumb {
-      width: 48px;
-      height: 48px;
-      border-radius: 6px;
-      object-fit: cover;
-      background: #222;
-    }
-    .preview-name { font-size: 13px; color: #ddd; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-    .remove-btn {
-      background: transparent;
-      border: none;
-      color: #ff6b6b;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    /* small helper for location display */
-    .location-info { font-size: 13px; color: #cfcfcf; margin-top: 6px; }
-
-    /* make sure popup doesn't break small screens */
-    @media (max-width: 420px) {
-      .attach-popup { left: calc(50% - 6px); gap: 8px; padding: 10px; }
-      .attach-option { width: 48px; height: 48px; }
     }
   </style>
 </head>
@@ -163,93 +42,20 @@
     <div class="glass-card">
       <h2>Contact Me</h2>
       <p>Let’s connect! Fill out the form below and I’ll get back to you soon.</p>
-
-      <!-- Form (enctype for file uploads) -->
-      <form id="contact-form" enctype="multipart/form-data">
+      <form id="contact-form">
         <div class="form-group">
           <label for="name">Your Name</label>
           <input type="text" id="name" name="name" placeholder="Enter your name" required>
         </div>
-
         <div class="form-group">
           <label for="email">Email Address</label>
           <input type="email" id="email" name="email" placeholder="Enter your email" required>
         </div>
-
-        <div class="form-group">
-          <label for="subject">Subject</label>
-          <input type="text" id="subject" name="subject" placeholder="Subject of your message" required>
-        </div>
-
-        <div class="form-group">
-          <label for="reason">Reason for Contact</label>
-          <select id="reason" name="reason" required>
-            <option value="">-- Select a reason --</option>
-            <option value="General Inquiry">General Inquiry</option>
-            <option value="Support">Support</option>
-            <option value="Collaboration">Collaboration</option>
-            <option value="Feedback">Feedback</option>
-          </select>
-        </div>
-
         <div class="form-group">
           <label for="message">Message</label>
           <textarea id="message" name="message" rows="5" placeholder="Type your message here..." required></textarea>
         </div>
-
-        <!-- Attachment UI area -->
-        <div class="form-group attachment-wrapper">
-          <div style="flex:1">
-            <label style="font-weight:bold; display:block; margin-bottom:6px;">Attachment (optional)</label>
-            <div class="attachment-preview" id="attachment-preview"></div>
-            <div class="location-info" id="location-info" style="display:none;"></div>
-          </div>
-
-          <!-- Paperclip button -->
-          <div>
-            <div class="attach-btn" id="attach-toggle" title="Attach">
-              <!-- paperclip icon -->
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 12v6a5 5 0 0 1-5 5H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4h6" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M21 3L12 12" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-
-            <!-- popup with 4 options -->
-            <div class="attach-popup" id="attach-popup" aria-hidden="true">
-              <!-- Document -->
-              <div class="attach-option" id="opt-doc" title="Document">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <div>Document</div>
-              </div>
-
-              <!-- Camera -->
-              <div class="attach-option" id="opt-camera" title="Camera">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h3l2-3h6l2 3h3v12H4z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="3"/></svg>
-                <div>Camera</div>
-              </div>
-
-              <!-- Gallery -->
-              <div class="attach-option" id="opt-gallery" title="Gallery">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 14l3-3 4 4"/></svg>
-                <div>Gallery</div>
-              </div>
-
-              <!-- Location -->
-              <div class="attach-option" id="opt-location" title="Location">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="2"/></svg>
-                <div>Location</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <button type="submit" class="glow-btn">Send Message</button>
-
-        <!-- hidden file inputs (triggered by popup) -->
-        <input type="file" id="input-doc" name="attachment_doc" accept=".pdf,.doc,.docx,.txt" />
-        <input type="file" id="input-camera" name="attachment_camera" accept="image/*" capture="environment" />
-        <input type="file" id="input-gallery" name="attachment_gallery" accept="image/*" multiple />
       </form>
     </div>
   </section>
@@ -261,241 +67,45 @@
   </footer>
 
   <script>
-    /* ----------------- config & helpers ----------------- */
     const form = document.getElementById('contact-form');
+    const notification = document.getElementById('euai-notification');
+
+    // Detect backend URL automatically
     const API_URL = window.location.hostname === "localhost"
       ? "http://localhost:3000"
       : "https://eutty-v-1.onrender.com"; // change if your Render URL is different
 
-    const notification = document.getElementById('euai-notification');
     function showNotification(msg) {
       notification.textContent = msg;
       notification.classList.add('show');
       setTimeout(() => notification.classList.remove('show'), 3000);
     }
 
-    /* ----------------- popup toggle ----------------- */
-    const attachToggle = document.getElementById('attach-toggle');
-    const attachPopup = document.getElementById('attach-popup');
-
-    attachToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      attachPopup.classList.toggle('show');
-    });
-
-    // close popup if click outside
-    document.addEventListener('click', (e) => {
-      if (!attachPopup.contains(e.target) && e.target !== attachToggle) {
-        attachPopup.classList.remove('show');
-      }
-    });
-
-    /* ----------------- input elements ----------------- */
-    const inputDoc = document.getElementById('input-doc');
-    const inputCamera = document.getElementById('input-camera');
-    const inputGallery = document.getElementById('input-gallery');
-    const previewContainer = document.getElementById('attachment-preview');
-    const locationInfo = document.getElementById('location-info');
-
-    // Utility to create preview item
-    function addPreviewItem({ name, url, isImage = false, inputName, fileIndex=null }) {
-      const item = document.createElement('div');
-      item.className = 'preview-item';
-
-      const thumb = document.createElement(isImage ? 'img' : 'div');
-      thumb.className = 'preview-thumb';
-      if (isImage) {
-        thumb.src = url;
-      } else {
-        thumb.style.display = 'flex';
-        thumb.style.alignItems = 'center';
-        thumb.style.justifyContent = 'center';
-        thumb.style.fontSize = '12px';
-        thumb.textContent = 'DOC';
-      }
-
-      const meta = document.createElement('div');
-      meta.style.flex = '1';
-      const nameEl = document.createElement('div');
-      nameEl.className = 'preview-name';
-      nameEl.textContent = name;
-
-      // remove button
-      const remove = document.createElement('button');
-      remove.className = 'remove-btn';
-      remove.innerHTML = '✖';
-      remove.addEventListener('click', () => {
-        // clear the corresponding input
-        if (inputName === 'attachment_gallery' && fileIndex !== null) {
-          // remove one file from the FileList (can't directly edit FileList -> reconstruct)
-          removeGalleryFileAt(fileIndex);
-        } else if (inputName === 'attachment_gallery') {
-          inputGallery.value = '';
-        } else if (inputName === 'attachment_doc') {
-          inputDoc.value = '';
-        } else if (inputName === 'attachment_camera') {
-          inputCamera.value = '';
-        }
-        item.remove();
-      });
-
-      meta.appendChild(nameEl);
-      item.appendChild(thumb);
-      item.appendChild(meta);
-      item.appendChild(remove);
-      previewContainer.appendChild(item);
-    }
-
-    /* ----------------- handle document pick ----------------- */
-    document.getElementById('opt-doc').addEventListener('click', () => {
-      attachPopup.classList.remove('show');
-      inputDoc.click();
-    });
-
-    inputDoc.addEventListener('change', () => {
-      previewContainer.innerHTML = ''; // single doc only
-      if (inputDoc.files && inputDoc.files[0]) {
-        const file = inputDoc.files[0];
-        addPreviewItem({ name: file.name, isImage: false, inputName: 'attachment_doc' });
-      }
-    });
-
-    /* ----------------- handle camera pick ----------------- */
-    document.getElementById('opt-camera').addEventListener('click', () => {
-      attachPopup.classList.remove('show');
-      inputCamera.click();
-    });
-
-    inputCamera.addEventListener('change', () => {
-      previewContainer.innerHTML = ''; // single camera file only
-      if (inputCamera.files && inputCamera.files[0]) {
-        const file = inputCamera.files[0];
-        const url = URL.createObjectURL(file);
-        addPreviewItem({ name: file.name || 'photo.jpg', url, isImage: true, inputName: 'attachment_camera' });
-      }
-    });
-
-    /* ----------------- handle gallery pick (multiple) ----------------- */
-    document.getElementById('opt-gallery').addEventListener('click', () => {
-      attachPopup.classList.remove('show');
-      inputGallery.click();
-    });
-
-    // helper to reconstruct FileList excluding an index (for remove)
-    let currentGalleryFiles = []; // store File objects
-    function rebuildGalleryInput() {
-      // Create a DataTransfer to set files programmatically
-      const dt = new DataTransfer();
-      currentGalleryFiles.forEach(f => dt.items.add(f));
-      inputGallery.files = dt.files;
-    }
-    function removeGalleryFileAt(index) {
-      currentGalleryFiles.splice(index, 1);
-      rebuildGalleryInput();
-      // refresh preview
-      renderGalleryPreviews();
-    }
-    function renderGalleryPreviews() {
-      previewContainer.innerHTML = '';
-      currentGalleryFiles.forEach((file, idx) => {
-        const url = URL.createObjectURL(file);
-        addPreviewItem({ name: file.name, url, isImage: true, inputName: 'attachment_gallery', fileIndex: idx });
-      });
-    }
-
-    inputGallery.addEventListener('change', () => {
-      if (inputGallery.files && inputGallery.files.length) {
-        // convert FileList to array
-        currentGalleryFiles = Array.from(inputGallery.files);
-        renderGalleryPreviews();
-      }
-    });
-
-    /* ----------------- handle location pick ----------------- */
-    document.getElementById('opt-location').addEventListener('click', async () => {
-      attachPopup.classList.remove('show');
-      if (!navigator.geolocation) {
-        showNotification('⚠️ Geolocation not supported by this browser.');
-        return;
-      }
-      showNotification('⏳ Getting location...');
-      navigator.geolocation.getCurrentPosition((pos) => {
-        const { latitude, longitude } = pos.coords;
-        // store in hidden input fields on the form (so it's sent)
-        let latInput = document.getElementById('loc-lat');
-        let lngInput = document.getElementById('loc-lng');
-        if (!latInput) {
-          latInput = document.createElement('input');
-          latInput.type = 'hidden';
-          latInput.id = 'loc-lat';
-          latInput.name = 'location_lat';
-          form.appendChild(latInput);
-        }
-        if (!lngInput) {
-          lngInput = document.createElement('input');
-          lngInput.type = 'hidden';
-          lngInput.id = 'loc-lng';
-          lngInput.name = 'location_lng';
-          form.appendChild(lngInput);
-        }
-        latInput.value = latitude;
-        lngInput.value = longitude;
-        locationInfo.style.display = 'block';
-        locationInfo.textContent = `📍 Location attached — ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
-        showNotification('✅ Location attached.');
-      }, (err) => {
-        console.error(err);
-        showNotification('⚠️ Unable to get location. Permission denied or error.');
-      }, { enableHighAccuracy: true, timeout: 10000 });
-    });
-
-    /* ----------------- submission ----------------- */
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // basic validation
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const message = document.getElementById('message').value.trim();
+
       if (!name || !email || !message) {
-        showNotification('⚠️ Please fill in all required fields.');
+        showNotification('⚠️ Please fill in all fields.');
         return;
       }
 
       showNotification('⏳ Sending message...');
 
-      // build FormData (it will include file inputs already present)
-      const fd = new FormData(form);
-
-      // if gallery files stored in currentGalleryFiles, ensure they are on inputGallery
-      if (currentGalleryFiles.length) {
-        // rebuild inputGallery files (already done when selecting, but ensure consistency)
-        const dt = new DataTransfer();
-        currentGalleryFiles.forEach(f => dt.items.add(f));
-        inputGallery.files = dt.files;
-      }
-
       try {
-        const res = await fetch(`${API_URL}/api/contact`, {  // <-- change here
-  method: 'POST',
-  body: fd
-});
+        const res = await fetch(`${API_URL}/api/contact`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message })
+        });
 
         const data = await res.json();
-        if (data && (data.success || data.message)) {
-          showNotification(data.message || '✅ Message sent! I’ll get back to you soon.');
-          // clear previews and inputs
-          previewContainer.innerHTML = '';
-          currentGalleryFiles = [];
-          inputDoc.value = '';
-          inputCamera.value = '';
-          inputGallery.value = '';
-          // clear location hidden fields if present
-          const lat = document.getElementById('loc-lat');
-          const lng = document.getElementById('loc-lng');
-          if (lat) lat.remove();
-          if (lng) lng.remove();
-          locationInfo.style.display = 'none';
+
+        if (data.success) {
+          showNotification('✅ Message sent! I’ll get back to you soon.');
           form.reset();
         } else {
           showNotification('❌ Failed to send: ' + (data.error || 'Unknown error.'));
@@ -503,6 +113,17 @@
       } catch (err) {
         console.error(err);
         showNotification('🚨 Error sending message. Try again later.');
+      }
+    });
+
+    // Highlight current nav link
+    const links = document.querySelectorAll('header.nav nav a');
+    const currentPage = window.location.pathname.split("/").pop();
+    links.forEach(link => {
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
       }
     });
   </script>
