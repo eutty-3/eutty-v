@@ -13,6 +13,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 /* ---------------- MIDDLEWARE ---------------- */
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'frontend')));
+app.use(express.urlencoded({ extended: true }));
 
 // CORS
 app.use((req, res, next) => {
