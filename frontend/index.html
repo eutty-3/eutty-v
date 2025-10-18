@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Home | Eutty Virtual Assistance</title>
   <link rel="stylesheet" href="style.css" />
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#000000">
   <style>
   /* --- Notification Modal + Dropdown Styles --- */
   .notification-modal {
@@ -488,6 +490,14 @@
     if (unread.length) openNotifModal(unread[0]);
   });
   </script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then(() => console.log("Service Worker registered"))
+      .catch(err => console.log("SW registration failed:", err));
+  }
+</script>
 
   <!-- NEW CARDS JS FOR ZOOM + SCHEDULE -->
   <script src="cards.js"></script>
