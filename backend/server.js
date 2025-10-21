@@ -52,19 +52,6 @@ app.post('/api/contact', async (req, res) => {
     res.status(500).json({ error: 'Failed to send message. Please check server logs.' });
   }
 });
-import pg from "pg";
-const { Pool } = pg;
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
-pool.connect()
-  .then(() => console.log("✅ Connected to PostgreSQL database"))
-  .catch(err => console.error("❌ Database connection error:", err));
 
 /* ---------------- START SERVER ---------------- */
 app.listen(PORT, () => {
