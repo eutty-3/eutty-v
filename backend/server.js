@@ -52,12 +52,6 @@ app.post('/api/contact', async (req, res) => {
     res.status(500).json({ error: 'Failed to send message. Please check server logs.' });
   }
 });
-
-/* ---------------- START SERVER ---------------- */
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
-
 import pg from "pg";
 const { Pool } = pg;
 
@@ -71,3 +65,8 @@ const pool = new Pool({
 pool.connect()
   .then(() => console.log("✅ Connected to PostgreSQL database"))
   .catch(err => console.error("❌ Database connection error:", err));
+
+/* ---------------- START SERVER ---------------- */
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
