@@ -57,3 +57,17 @@ app.post('/api/contact', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
+import pg from "pg";
+const { Pool } = pg;
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+pool.connect()
+  .then(() => console.log("✅ Connected to PostgreSQL database"))
+  .catch(err => console.error("❌ Database connection error:", err));
