@@ -72,9 +72,9 @@
   .notification-content.warning{ border-top: 6px solid #ffc600; }
   .notification-content.error  { border-top: 6px solid #ff4747; }
   .notification-icon.info   { color: #2356e2; }
-  .notification-icon.success{ color: #1bbf54; }
+  .notification-icon.success{ color: #049e3aff; }
   .notification-icon.warning{ color: #ffc600; }
-  .notification-icon.error  { color: #ff4747; }
+  .notification-icon.error  { color: #c20000ff; }
 
   .notif-bell {
     position: relative; display: inline-block; margin-left: 1.2em; cursor: pointer; vertical-align: middle;
@@ -158,28 +158,23 @@
 <main class="main-wrap">
 <!-- Eutty Virtual Assistant Logo/Image -->
 <div style="display:flex;justify-content:center;align-items:center;margin-bottom:2rem;">
-  <img 
-    src="assets/1760562516585 (1).jpg" 
-    alt="Eutty Virtual Assistant Logo" 
-    style="max-width:220px;width:80vw;max-height:160px;border-radius:18px;box-shadow:0 4px 32px #0002;"
-  >
 </div>
   <!-- INTRODUCTION / HERO SECTION -->
   <section class="home-hero glass">
     <div class="intro-text">
       <h1 class="hero-title">Welcome to Eutty Virtual Assistant</h1>
       <p>
-        Eutty Virtual Assistant was developed in  to provide seamless digital support for users navigating: online applications, services, and cyber solutions. The system was designed to simplify the digital journey for everyone.
+        Eutty Virtual Assistant is a system developed to provide seamless digital support for users navigating: online applications, services, and cyber solutions. The system was designed to simplify the digital journey for everyone.
       </p>
       <p>
-        The purpose of Eutty Virtual Assistant is to empower users with fast, secure, and professional assistance. Whether you need help with online applications, account recovery, or digital document management, we're here for you.
+        It empowers users with fast, secure, and professional assistance. Whether you need help with online applications, account recovery, or digital document management, we're here for you.
         Also we help assist you with tips in securing all your accounts (cyber security)
       </p>
       <p>
         This system works by combining intelligent automation, user-friendly interfaces, and secure protocols to deliver personalized support. Every interaction is designed to be straightforward, reducing your effort and saving time.
       </p>
       <p>
-        We sincerely thank you for accessing Eutty Virtual Assistant. Your trust and engagement are what drive us to continually improve and expand the services we offer. We hope you find this platform helpful!
+        We sincerely thank you for accessing Eutty VA. Your trust and engagement are what drive us to continually improve and expand the services we offer. We hope you find this platform helpful!
       </p>
     </div>
   </section>
@@ -315,11 +310,18 @@
   // Types: "info", "warning", "error", "success"
   const notifications = [
     {
+      id:"Regular-system-maintanence-2025-11-20",
+      type: "info",
+      title: "regular system maintanence time",
+      message: "Hello we are delightful,  to announce to you about our regular system maintanence, The system maintanece will be conducted during wednesdays(from 6am-1pm) furthermore the maintanance may be extended, sorry for the inconvinience",
+      date: "2025-11-20",
+      from: "Eutty VA Admin Team",
+    },
+    {
       id: "New-stuffs-2025-1-1",
       type: "info",
       title: "Introducing new features ",
-      message: " hello we are delightful,to introduce you to new features (live chat", where you will be conversing with our support team (admin live ).
-<p>The live chat feature will impact in resolution of long waiting responses from our team, Thank you </p>",
+      message: " hello we are delightful,to introduce you to new features (live chat, where you will be conversing with our support team (admin live ).The live chat feature will impact in resolution of long waiting responses from our team, Thank you",
       date: "2025-10-16",
       from: "Eutty Virtual Admin Team",
     },
@@ -327,7 +329,7 @@
       id: "new-feature-2025-11-1",
       type: "info",
       title: "New Feature Launch",
-      message: "A new secure document upload service will be available next week. Stay tuned!",
+      message: "A new secure document and other attachment stuffs and files upload service will be available very soon  Stay tuned!",
       date: "2025-11-5",
       from: "Eutty Virtual Team",
     },
@@ -343,8 +345,8 @@
     id: "System-upgrade-2025-1-1",
     type: "info",
     title: "we will be upgrading system upgrade",
-    message: "Hello we will be updating our system features, services and adding some     new important features , during system upgrade period, we will. be fixing known issues and bugs in order to improve optimization and system performance .glad "
-    date: "2025-11-10"
+    message: "Hello we will be updating our system features, services and adding some     new important features , during system upgrade period, we will. be fixing known issues and bugs in order to improve optimization and system performance .glad",
+    date: "2025-11-10",
     from: "Eutty virtual Admin Team",
     }
   ];

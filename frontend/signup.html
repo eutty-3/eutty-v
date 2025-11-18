@@ -8,19 +8,18 @@
 <style>
   body {
     margin:0; font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #a0c4ff, #ffd3e0);
+    background: linear-gradient(135deg, #02193dff, #ffd3e0);
     display:flex; align-items:center; justify-content:center; height:100vh;
-  }
   .auth-card {
     backdrop-filter: blur(15px);
-    background: rgba(255,255,255,0.2);
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 20px;
     padding: 40px;
     max-width: 360px;
     width: 90%;
     box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     text-align:center;
-    transition: transform 0.3s ease;
+    transition: transform 0.5s ease;
   }
   .auth-card:hover { transform: translateY(-5px); }
   .auth-card h2 { margin-bottom:20px; color:#fff; text-shadow:0 2px 5px rgba(0,0,0,0.2);}
@@ -50,10 +49,12 @@
 </head>
 <body>
 <div class="auth-card">
-  <h2>Create Your Account ✨</h2>
+  <h2>here Create Your Account ✨</h2>
   <form id="signup-form">
     <input type="text" id="signup-name" placeholder="Full Name" required>
+    <input type="10tel" id="pnumber" placeholder="phone number" required>
     <input type="email" id="signup-email" placeholder="Email" required>
+    <input type="email" id="signup-confirm-email" placeholder="Confirm email" required>
     <input type="password" id="signup-password" placeholder="Password" required>
     <input type="password" id="signup-confirm-password" placeholder="Confirm Password" required>
     <div class="password-match" id="password-match-msg"></div>
