@@ -23,7 +23,7 @@ app.use((req, res, next) => {
   next();
 });
 
-/* ---------------- CONTACT FORM ROUTE ---------------- */
+/* ---------------- CONTACT FORM ROUTE --------------- */
 app.post('/api/contact', async (req, res) => {
   const { name, email, message } = req.body;
 
